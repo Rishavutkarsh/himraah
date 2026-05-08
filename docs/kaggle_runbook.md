@@ -62,6 +62,11 @@ If preflight fails, do not train. Preserve `preflight_failure.json`, notebook
 logs, mounted input paths, environment mismatch details, and the smallest
 reproducible failure.
 
+Known first-pass finding: Kaggle preflight reached dataset validation but failed
+because `bitsandbytes` was unavailable and the configured wheelhouse dataset
+source was rejected by Kaggle. Fix package/wheel availability before smoke SFT;
+do not change HimRaah data or prompts for this failure class.
+
 ## 3. Kaggle Smoke SFT
 
 Run `himraah/kaggle_gemma_sft/gemma_lora_sft.py` with:

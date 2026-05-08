@@ -77,7 +77,9 @@ evaluated.
 ## Risk Register
 
 - Kaggle runtime or GPU failure:
-- Dependency or wheelhouse mismatch:
+- Dependency or wheelhouse mismatch: preflight v2 showed `bitsandbytes` missing
+  and Kaggle rejected `rishavutkarsh/himraah-transformers-wheels` as a dataset
+  source; fix package availability before smoke SFT.
 - Offline asset loading issue:
 - Unsafe advice or missing escalation:
 - Overclaiming SFT improvement:
