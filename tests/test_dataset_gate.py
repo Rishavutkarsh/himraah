@@ -460,6 +460,9 @@ def test_kaggle_scripts_include_hardened_reportable_and_4bit_paths():
     combined = preflight + sft + eval_script
     assert "SANKAT" + "_" not in combined
     assert "sankat" + "-saathi" not in combined
+    assert "resolve_himraah_data_dir" in preflight
+    assert "resolve_himraah_data_dir" in sft
+    assert "resolve_himraah_eval_dir" in eval_script
 
 
 def test_readme_documents_current_himraah_pipeline():

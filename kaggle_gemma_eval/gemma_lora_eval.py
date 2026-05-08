@@ -130,6 +130,8 @@ def write_failure(stage: str, exc: BaseException) -> None:
 
 
 def assert_data_dir() -> dict:
+    global DATA_DIR
+    DATA_DIR = resolve_himraah_eval_dir()
     required = ["eval_prompts.jsonl", "eval_rubric.jsonl", "manifest.json"]
     missing = [name for name in required if not (DATA_DIR / name).exists()]
     if missing:
@@ -138,6 +140,24 @@ def assert_data_dir() -> dict:
     if manifest.get("project") != "himraah" or manifest.get("dataset_name") != DATASET_NAME:
         raise RuntimeError(f"wrong HimRaah eval manifest: {manifest}")
     return manifest
+
+
+def resolve_himraah_eval_dir() -> Path:
+    required = ["eval_prompts.jsonl", "eval_rubric.jsonl", "manifest.json"]
+    if all((DATA_DIR / name).exists() for name in required):
+        return DATA_DIR
+    input_root = Path("/kaggle/input")
+    if input_root.exists():
+        for manifest_path in input_root.rglob("manifest.json"):
+            try:
+                manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            if manifest.get("project") == "himraah" and manifest.get("dataset_name") == DATASET_NAME:
+                candidate = manifest_path.parent
+                if all((candidate / name).exists() for name in required):
+                    return candidate
+    return DATA_DIR
 
 
 def find_model_path() -> Path:

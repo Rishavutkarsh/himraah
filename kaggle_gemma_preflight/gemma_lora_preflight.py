@@ -49,13 +49,31 @@ def count_jsonl(path: Path) -> int:
 
 
 def assert_himraah_data_dir() -> tuple[Path, dict]:
-    missing = [name for name in REQUIRED_FILES if not (DATA_DIR / name).exists()]
+    data_dir = resolve_himraah_data_dir()
+    missing = [name for name in REQUIRED_FILES if not (data_dir / name).exists()]
     if missing:
-        raise RuntimeError(f"missing HimRaah dataset files under {DATA_DIR}: {missing}")
-    manifest = json.loads((DATA_DIR / "manifest.json").read_text(encoding="utf-8"))
+        raise RuntimeError(f"missing HimRaah dataset files under {data_dir}: {missing}")
+    manifest = json.loads((data_dir / "manifest.json").read_text(encoding="utf-8"))
     if manifest.get("project") != "himraah" or manifest.get("dataset_name") != DATASET_NAME:
         raise RuntimeError(f"wrong dataset manifest for HimRaah: {manifest}")
-    return DATA_DIR, manifest
+    return data_dir, manifest
+
+
+def resolve_himraah_data_dir() -> Path:
+    if all((DATA_DIR / name).exists() for name in REQUIRED_FILES):
+        return DATA_DIR
+    input_root = Path("/kaggle/input")
+    if input_root.exists():
+        for manifest_path in input_root.rglob("manifest.json"):
+            try:
+                manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            if manifest.get("project") == "himraah" and manifest.get("dataset_name") == DATASET_NAME:
+                candidate = manifest_path.parent
+                if all((candidate / name).exists() for name in REQUIRED_FILES):
+                    return candidate
+    return DATA_DIR
 
 
 def find_model_path() -> Path:
