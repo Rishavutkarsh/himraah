@@ -123,7 +123,7 @@ def write_kaggle_dataset_metadata(export_dir: Path, manifest: dict[str, Any]) ->
         "title": "HimRaah Text SFT Approved Export",
         "id": DATASET_SLUG,
         "licenses": [{"name": "CC0-1.0"}],
-        "subtitle": "Approved HimRaah route-pack text SFT/eval export for Kaggle preflight and Gemma LoRA.",
+        "subtitle": "Approved HimRaah route-pack text SFT export for Kaggle preflight.",
         "description": (
             "Immutable HimRaah export generated from the approved Gangotri-Chirbasa-Bhojbasa-Gomukh route pack. "
             f"Bundle sha256: {manifest['export_bundle_sha256']}."
