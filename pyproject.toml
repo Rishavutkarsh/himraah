@@ -1,0 +1,10 @@
+[project]
+name = "himraah"
+version = "0.1.0"
+description = "Route-pack dataset and SFT gates for the HimRaah offline mountain companion."
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

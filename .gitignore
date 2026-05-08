@@ -1,0 +1,8 @@
+outputs/
+test_runs/
+exports/
+.pytest_cache/
+pytest-cache-files-*/
+pytest-tmp/
+__pycache__/
+*.pyc

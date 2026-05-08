@@ -1,0 +1,67 @@
+{
+  "project": "HimRaah",
+  "route": "Gangotri -> Chirbasa -> Bhojbasa -> Gomukh",
+  "generated_dataset_valid": true,
+  "gate_status": "APPROVED_FOR_SFT",
+  "sft_allowed": true,
+  "counts": {
+    "sources": 8,
+    "route_facts": 8,
+    "safety_facts": 9,
+    "field_guide": 4,
+    "phrasebook": 5,
+    "sft_text": 250,
+    "sft_vision": 72,
+    "dpo_draft": 80,
+    "eval": 80,
+    "non_emergency_companion_sft": 154,
+    "total_sft": 322
+  },
+  "category_counts": {
+    "companion_route_qa": 26,
+    "planning": 26,
+    "culture_learning": 26,
+    "field_guide": 50,
+    "language_help": 26,
+    "safety_urgent": 43,
+    "safety_high_risk": 125
+  },
+  "reviewers": {
+    "safety": {
+      "status": "APPROVE",
+      "required_before_sft": true,
+      "notes": "Safety re-review approved: no unsafe continuation, plant-edibility, fake rescue/weather, or glacier/campsite safety claims; river-crossing and scenario-specific DPO checks present."
+    },
+    "source_grounding": {
+      "status": "APPROVE",
+      "required_before_sft": true,
+      "notes": "Source re-review approved: dpo/eval source/fact parity enforced; generated dpo/eval consistency error_count 0."
+    },
+    "training_eval": {
+      "status": "APPROVE",
+      "required_before_sft": true,
+      "notes": "Training/eval re-review approved: 39 canonical eval families, eval runner/scorer coverage checks, strict three-reviewer gate, and negative tests present."
+    }
+  },
+  "notes": [
+    "DPO is draft only until baseline and SFT failures are known.",
+    "Vision cards are synthetic placeholders for review and should be replaced with licensed photos before final vision fine-tuning."
+  ],
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "warnings": [
+      "fact gomukh_permit_current_rules requires current status; ensure examples do not state it as timeless"
+    ],
+    "category_counts": {
+      "companion_route_qa": 26,
+      "planning": 26,
+      "culture_learning": 26,
+      "field_guide": 50,
+      "language_help": 26,
+      "safety_urgent": 43,
+      "safety_high_risk": 125
+    },
+    "non_emergency_companion_ratio": 0.4783
+  }
+}

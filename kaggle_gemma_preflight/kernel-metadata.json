@@ -1,0 +1,23 @@
+{
+  "id": "rishavutkarsh/himraah-gemma-e2b-preflight",
+  "title": "HimRaah Gemma E2B Preflight",
+  "code_file": "gemma_lora_preflight.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": false,
+  "dataset_sources": [
+    "rishavutkarsh/himraah-text-sft-approved",
+    "rishavutkarsh/himraah-transformers-wheels"
+  ],
+  "model_sources": [
+    "google/gemma-4/Transformers/gemma-4-e2b-it/1"
+  ],
+  "competition_sources": [],
+  "keywords": [
+    "gemma",
+    "himraah",
+    "preflight"
+  ]
+}
