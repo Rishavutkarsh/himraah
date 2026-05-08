@@ -69,7 +69,7 @@ def git_commit() -> str:
 def file_manifest(out_dir: Path) -> list[dict[str, Any]]:
     rows = []
     for path in sorted(out_dir.iterdir()):
-        if path.is_file() and path.name != "manifest.json":
+        if path.is_file() and path.name not in {"manifest.json", "dataset-metadata.json"}:
             rows.append({"path": path.name, "bytes": path.stat().st_size, "sha256": sha256_file(path)})
     return rows
 
@@ -173,6 +173,9 @@ def build_export(dataset_dir: Path, out_dir: Path, eval_holdout: int) -> dict[st
     eval_prompt_rows = [export_eval_prompt(row, context) for row in rubric_rows]
 
     out_dir.mkdir(parents=True, exist_ok=True)
+    stale_kaggle_metadata = out_dir / "dataset-metadata.json"
+    if stale_kaggle_metadata.exists():
+        stale_kaggle_metadata.unlink()
     write_jsonl(out_dir / "train.jsonl", train_rows)
     write_jsonl(out_dir / "eval.jsonl", loss_eval_rows)
     write_jsonl(out_dir / "eval_prompts.jsonl", eval_prompt_rows)

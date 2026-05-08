@@ -505,6 +505,7 @@ def test_gemma_export_manifest_includes_reproducibility_metadata():
     listed = {item["path"] for item in manifest["export_file_manifest"]}
     assert {"train.jsonl", "eval.jsonl", "eval_prompts.jsonl", "eval_rubric.jsonl", "training_config.json"} <= listed
     assert "manifest.json" not in listed
+    assert "dataset-metadata.json" not in listed
     assert manifest["git_commit"]
 
 
