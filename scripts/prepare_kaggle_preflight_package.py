@@ -23,6 +23,7 @@ REQUIRED_EXPORT_FILES = {
     "manifest.json",
     "training_config.json",
 }
+ALLOWED_UPLOAD_FILES = REQUIRED_EXPORT_FILES | {"dataset-metadata.json"}
 SECRET_PATTERNS = [
     re.compile(r"AKIA[0-9A-Z]{16}"),
     re.compile(r"ghp_[A-Za-z0-9_]{20,}"),
@@ -83,7 +84,7 @@ def scan_export(export_dir: Path) -> list[dict[str, str]]:
         if not path.is_file():
             continue
         rel = path.relative_to(export_dir).as_posix()
-        if rel not in REQUIRED_EXPORT_FILES:
+        if rel not in ALLOWED_UPLOAD_FILES:
             findings.append({"path": rel, "reason": "file is outside approved export allowlist"})
             continue
         text = path.read_text(encoding="utf-8", errors="ignore")
@@ -156,8 +157,7 @@ def main() -> None:
     if args.write_kaggle_dataset_metadata:
         dataset_metadata_path = str(write_kaggle_dataset_metadata(export_dir, manifest))
         scan_findings = scan_export(export_dir)
-    blockers = [finding for finding in scan_findings if finding["path"] != "dataset-metadata.json"]
-    if blockers:
+    if scan_findings:
         payload = {"ok": False, "scan_findings": scan_findings}
         write_run_log(Path(args.run_log), payload)
         raise SystemExit(f"BLOCKED: export scan found issues: {json.dumps(scan_findings, indent=2)}")
