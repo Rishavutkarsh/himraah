@@ -505,6 +505,7 @@ def test_gemma_export_manifest_includes_reproducibility_metadata():
     listed = {item["path"] for item in manifest["export_file_manifest"]}
     assert {"train.jsonl", "eval.jsonl", "eval_prompts.jsonl", "eval_rubric.jsonl", "training_config.json"} <= listed
     assert "manifest.json" not in listed
+    assert manifest["git_commit"]
 
 
 def test_kaggle_scripts_include_smoke_sft_and_environment_capture():
@@ -555,6 +556,8 @@ def test_himraah_docs_capture_kaggle_decision_and_fallback_policy():
     assert "immutable kaggle slugs" in runbook
     assert "himraah_min_primary_delta" in runbook
     assert "use only scripts under `himraah/kaggle_*`" in runbook
+    assert "prepare_kaggle_preflight_package.py" in runbook
+    assert "rishavutkarsh/himraah-text-sft-approved" in runbook
     assert "blocker" in failure
     assert "dataset patch manifest" in failure
     assert "dpo remains blocked" in failure
@@ -565,3 +568,16 @@ def test_himraah_docs_capture_kaggle_decision_and_fallback_policy():
     assert "future extension" in submission
     assert "risk register" in submission
     assert "concrete gangotri" in submission
+
+
+def test_preflight_package_script_enforces_expected_kaggle_sources():
+    project_root = Path(__file__).resolve().parents[1]
+    script = (project_root / "scripts" / "prepare_kaggle_preflight_package.py").read_text(encoding="utf-8")
+    assert "rishavutkarsh/himraah-text-sft-approved" in script
+    assert "rishavutkarsh/himraah-gemma-e2b-preflight" in script
+    assert "rishavutkarsh/himraah-transformers-wheels" in script
+    assert "google/gemma-4/Transformers/gemma-4-e2b-it/1" in script
+    assert "assert_clean_repo" in script
+    assert "scan_export" in script
+    assert "dataset-metadata.json" in script
+    assert "Preflight tiny generation is a plumbing canary only" in script

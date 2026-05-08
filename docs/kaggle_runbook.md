@@ -8,7 +8,8 @@ training, or real evals on the laptop.
 Create or refresh the approved export:
 
 ```powershell
-python himraah/scripts/prepare_gemma_sft_dataset.py --dataset-dir himraah/data/processed/starter --out-dir himraah/exports/himraah-text-sft-approved
+python scripts/prepare_gemma_sft_dataset.py --dataset-dir data/processed/starter --out-dir exports/himraah-text-sft-approved
+python scripts/prepare_kaggle_preflight_package.py --export-dir exports/himraah-text-sft-approved --write-kaggle-dataset-metadata
 ```
 
 Upload the export directory as an immutable Kaggle input dataset. The export
@@ -28,9 +29,16 @@ Approved export checklist:
   permits, prices, rescue, transport, accommodation, and network claims.
 - Record immutable Kaggle slugs/versions for the HimRaah export dataset, Gemma
   model input, wheelhouse if used, SFT adapter output dataset, and eval inputs.
+- Upload only `exports/himraah-text-sft-approved`; exclude raw source folders,
+  logs, drafts, notebooks with outputs, `.env`, credentials, test runs, caches,
+  training artifacts, and parent workspace files.
+- The package gate performs a lightweight scan for secrets, tokens, unintended
+  local paths, and files outside the approved export allowlist.
 
 Use only scripts under `himraah/kaggle_*`; do not use similarly named root-level
 Kaggle folders unless they have been proven identical.
+
+Expected Kaggle dataset slug: `rishavutkarsh/himraah-text-sft-approved`.
 
 ## 2. Kaggle Preflight
 

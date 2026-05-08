@@ -56,7 +56,7 @@ def git_commit() -> str:
     try:
         result = subprocess.run(
             ["git", "rev-parse", "HEAD"],
-            cwd=ROOT.parent,
+            cwd=ROOT,
             capture_output=True,
             text=True,
             check=True,
